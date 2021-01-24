@@ -8,8 +8,8 @@
   "private": true,
   "scripts": {
     "dev": "next",
-    "start": "start next",
-    "build": "build next"
+    "start": "next start",
+    "build": "next build"
   },
   "dependencies": {
     "next": "^10.0.5",
