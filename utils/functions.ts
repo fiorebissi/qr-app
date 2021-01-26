@@ -1,4 +1,6 @@
 import QRCode from 'qrcode'
+import path from 'path'
+import { fstat } from 'fs'
  
 export const qrMaker = async ( data ) => {
 	
@@ -41,7 +43,25 @@ export const qrMaker = async ( data ) => {
 		return error
 		
 	}
+}
 
-
+export const qrFile = async ( data ) => {
+	const pathDocs = path.resolve('./documents')
+	let codigo
+	try {
+		const strFile = JSON.stringify(data.map(file => {
+			return {
+				name: file.name
+			}
+		}))
+		const bodyParse = JSON.parse(strFile)
+	// console.log('bodyparse', bodyParse)
+	const pathName = bodyParse[0].name
+	console.log('path', pathName)
+	
+	} catch (error) {
+		return error
+		
+	}
 }
 
