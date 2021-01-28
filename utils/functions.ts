@@ -1,6 +1,10 @@
 import QRCode from 'qrcode'
-import path from 'path'
-import { fstat } from 'fs'
+import { IResponseService } from '@interfaces/IResponseService'
+
+
+export const responseService = ( response: IResponseService ): IResponseService => {
+	return response
+}
  
 export const qrMaker = async ( data ) => {
 	
@@ -45,23 +49,30 @@ export const qrMaker = async ( data ) => {
 	}
 }
 
-export const qrFile = async ( data ) => {
-	const pathDocs = path.resolve('./documents')
-	let codigo
-	try {
-		const strFile = JSON.stringify(data.map(file => {
-			return {
-				name: file.name
-			}
-		}))
-		const bodyParse = JSON.parse(strFile)
-	// console.log('bodyparse', bodyParse)
-	const pathName = bodyParse[0].name
-	console.log('path', pathName)
+// export const qrFile = async ( data ) => {
+// 	const pathDocs = path.resolve('./documents')
+// 	let codigo
+// 	try {
+// 		codigo = data
+// 		const strFile = JSON.stringify(data.map(file => {
+// 			return {
+// 				name: file.name
+// 			}
+// 		}))
+// 		const bodyParse = JSON.parse(strFile)
+// 	// console.log('bodyparse', bodyParse)
+// 	const pathName = bodyParse[0].name
+// 	console.log('path', pathName)
+// 	var newpath = `${pathDocs}/${pathName}`
+// 		fs.writeFile(newpath, data, (err) => {
+// 			if (err) throw err
+// 			console.log('File guardado')
+// 		})
+// 		return codigo
 	
-	} catch (error) {
-		return error
+// 	} catch (error) {
+// 		return error
 		
-	}
-}
+// 	}
+// }
 

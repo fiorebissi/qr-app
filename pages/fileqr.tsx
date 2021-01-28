@@ -1,5 +1,5 @@
 import Layout from '@components/Layout'
-import { qrFile } from '@utils/functions'
+import { upload } from '@utils/upload'
 import React, { useState } from 'react'
 import { AiOutlineQrcode } from 'react-icons/ai'
 
@@ -7,12 +7,24 @@ const fileqr = () => {
 	const SIZE = '32px'
 	const [fileQr,setFileQr] = useState([])
 
-	const handleClick= async () => {
-		console.log(fileQr) 
-		const response = await qrFile(fileQr)
-		// console.log(response)
-	
+	const handleChange = async (e) => {
+		const archivo = e.target.files
+		var data = new FormData()
+		data.append('fileQr',archivo[0])
+		console.log('data',data)
+
+		await fetch(`http://localhost:3000/api/documentation`, {
+			method: `POST`,
+			body: data,
+		}).then((result) => {
+			return result.json()
+		}).catch(e => {
+			return console.error('Error',e)
+		}) .then(data => {
+			console.log(data)
+		})
 	}
+
 	return (
 		<Layout>
 			<div className='flex flex-col items-center justify-center w-full'>
@@ -22,8 +34,8 @@ const fileqr = () => {
 				</div>
 				<div className='pb-4'>
 					<form className='flex flex-col px-4 py-4 space-y-4 border border-indigo-200'>
-					<input name='fileQr' onChange={(e) => {e.target.files && setFileQr([...e.target.files]);}} id='fileQr' className='w-full px-2 border border-indigo-600' type='file' required/>
-					<button type='button' onClick={handleClick} className='px-4 py-2 text-center text-white bg-indigo-800 border-2 border-indigo-200 rounded hover:bg-indigo-400'>Generar</button>
+					<input name='fileQr' id='fileQr' onChange={(e) => {handleChange(e)}} className='w-full px-2 border border-indigo-600' type='file' required/>
+					<button type='button' className='px-4 py-2 text-center text-white bg-indigo-800 border-2 border-indigo-200 rounded hover:bg-indigo-400'>Generar</button>
 					</form>
 				</div>
 				{/* {fileQr && (

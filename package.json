@@ -12,7 +12,10 @@
     "build": "next build"
   },
   "dependencies": {
+    "formidable": "^1.2.2",
+    "mime-types": "^2.1.28",
     "next": "^10.0.5",
+    "next-connect": "^0.9.1",
     "postcss": "^8.2.4",
     "qrcode": "^1.4.4",
     "react": "^17.0.1",
