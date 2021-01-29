@@ -10,8 +10,7 @@ const pathDocumentation = path.resolve( `./uploads/documentation` )
 export const uploadDocumentation = async ( body : any ) : Promise<IResponseService> => {
 
 	try{
-		const bodyParse = JSON.parse(body)
-		console.log('bodyParse:', bodyParse)
+		console.log('body:', body)
 
 
 		const newDirectory = `${pathDocumentation}\\myFile.txt`

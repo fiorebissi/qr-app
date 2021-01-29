@@ -5,6 +5,19 @@ import { IResponseService } from '@interfaces/IResponseService'
 export const responseService = ( response: IResponseService ): IResponseService => {
 	return response
 }
+
+export function checkTypes( types: string[] ): boolean {
+	let result = false
+
+	types.forEach( ( type ) => {
+		if ( ( type !== 'png' && type !== `jpg` && type !== `pdf` && type !== `jpeg` && !type.includes( `zip` ) ) || result ) {
+			result = true
+		} else {
+			result = false
+		}
+	} )
+	return result
+}
  
 export const qrMaker = async ( data ) => {
 	

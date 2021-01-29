@@ -4,7 +4,11 @@ import response from '@network/response'
 import { uploadDocumentation } from '@services/documentationService'
 import { IResponseService } from '@interfaces/IResponseService'
 
+import multipartMiddleware from '@middleware/multipartMiddleware'
+
 const handler = nextConnect()
+
+handler.use( multipartMiddleware )
 
 handler.post( async ( req: NextApiRequest, res: NextApiResponse ) => {
 	try {
