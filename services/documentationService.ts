@@ -4,48 +4,48 @@ import { IResponseService } from '@interfaces/IResponseService'
 import { responseService } from '@utils/functions'
 import mime from 'mime-types'
 import { moveFile } from '@utils/fileUtil'
-import { JsxEmit } from 'typescript'
-const pathDocumentation = path.resolve( `./uploads/documentation` )
+const pathDocumentation = path.resolve( `./` )
 
 export const uploadDocumentation = async ( body : any ) : Promise<IResponseService> => {
 
 	try{
-		console.log('body:', body)
-
-
-		const newDirectory = `${pathDocumentation}\\myFile.txt`
+		const newDirectory = `${pathDocumentation}\\documentos`
+		const documents = []
 
 		if ( !fs.existsSync( newDirectory ) ) {
 			fs.mkdirSync( newDirectory )
 		}
-		// for ( const propertyFile of Object.keys( body.files ) ) {
-		// 	let fileType: string = body.files[propertyFile].type.split( `/` ).pop()
-	
-		// 	if ( fileType.includes( `zip` ) ) {
-		// 		fileType = `zip`
-		// 	}
-		// 	await moveFile( body.files[propertyFile].path, `${newDirectory}\\${Buffer.from( body.files[propertyFile].name ).toString( `base64` )}.${fileType}` )
-		// }
-		return responseService( { success: true, message: `Documentacion Cargada`, data: body } )
+		for (const key in body.files) {
+			if (Object.prototype.hasOwnProperty.call(body.files, key)) {
+				const element = body.files[key];
+				const fileType = element.type
+				console.log('fileType', fileType.split( `/` ).pop())
+				await moveFile( element.path, `${newDirectory}\\${Buffer.from( element.name ).toString( `base64` )}.${fileType.split( `/` ).pop()}` )
+			}
+		}
+		return responseService( { success: true, message: `Documentacion Cargada`, data: documents } )
 
 	} catch(error){
+		console.log(error)
 		return responseService( { success: false, message: `La documentacion no pudo ser cargada` } )
 
 	}
+}
 
-	// const documentation = await documentationRepository.save( {
-	// 	usuarioId: jwt_id,
-	// 	constInscripIva: `${Buffer.from( constInscripIva?.name ).toString( `base64` )}.${constInscripIva.type.split( `/` ).pop().includes( `zip` ) ? `zip` : constInscripIva.type.split( `/` ).pop() }`,
-	// 	constInscripIngBrutos: ( constInscripIngBrutosCorresponde ) ? `${Buffer.from( constInscripIngBrutos.name ).toString( `base64` )}.${constInscripIngBrutos.type.split( `/` ).pop().includes( `zip` ) ? `zip` : constInscripIngBrutos.type.split( `/` ).pop() }` : null,
-	// 	constInscripIngBrutosCorresponde: constInscripIngBrutosCorresponde,
-	// 	cm01: ( cm01Corresponde ) ? `${Buffer.from( cm01.name ).toString( `base64` )}.${cm01.type.split( `/` ).pop().includes( `zip` ) ? `zip` : cm01.type.split( `/` ).pop() }` : null,
-	// 	cm01Corresponde: cm01Corresponde,
-	// 	cm02: ( cm02Corresponde ) ? `${Buffer.from( cm02.name ).toString( `base64` )}.${cm02.type.split( `/` ).pop().includes( `zip` ) ? `zip` : cm02.type.split( `/` ).pop() }` : null,
-	// 	cm02Corresponde: cm02Corresponde,
-	// 	cm05: ( cm05Corresponde ) ? `${Buffer.from( cm05.name ).toString( `base64` )}.${cm05.type.split( `/` ).pop().includes( `zip` ) ? `zip` : cm05.type.split( `/` ).pop() }` : null,
-	// 	cm05Corresponde: cm05Corresponde,
-	// 	exencionesImpositiva: ( exencionesImpositivaCorresponde ) ? `${Buffer.from( exencionesImpositiva.name ).toString( `base64` )}.${exencionesImpositiva.type.split( `/` ).pop().includes( `zip` ) ? `zip` : exencionesImpositiva.type.split( `/` ).pop() }` : null,
-	// 	exencionesImpositivaCorresponde: exencionesImpositivaCorresponde,
-	// } )
+export const download = async ( docNameHash: string ): Promise<unknown> => {
+	const directory = `${pathDocumentation}\\documentos`
+	const docName = Buffer.from( docNameHash, `base64` ).toString( `ascii` )
 
+	return new Promise<any>( ( resolve, reject ) => {
+		fs.readFile( `${directory}/${docNameHash}`, ( err, data ) => {
+			if ( err ) {
+				return reject( responseService( { success: false, message: `No se pudo obtener la imagen` } ) )
+			}
+			return resolve( {
+				file: data,
+				name: docName,
+				type: mime.lookup( docName )
+			} )
+		} )
+	} )
 }
