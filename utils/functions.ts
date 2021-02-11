@@ -48,9 +48,9 @@ export const qrMaker = async ( data ) => {
 			quality: 0.3
 		}
 		let codigo 
-		console.log('eligio: ', output)
+
 		QRCode.toDataURL(textoqr, opts, function (err, url) {
-			console.log(url)
+
 			codigo = url
 		})	
 
@@ -62,30 +62,27 @@ export const qrMaker = async ( data ) => {
 	}
 }
 
-// export const qrFile = async ( data ) => {
-// 	const pathDocs = path.resolve('./documents')
-// 	let codigo
-// 	try {
-// 		codigo = data
-// 		const strFile = JSON.stringify(data.map(file => {
-// 			return {
-// 				name: file.name
-// 			}
-// 		}))
-// 		const bodyParse = JSON.parse(strFile)
-// 	// console.log('bodyparse', bodyParse)
-// 	const pathName = bodyParse[0].name
-// 	console.log('path', pathName)
-// 	var newpath = `${pathDocs}/${pathName}`
-// 		fs.writeFile(newpath, data, (err) => {
-// 			if (err) throw err
-// 			console.log('File guardado')
-// 		})
-// 		return codigo
-	
-// 	} catch (error) {
-// 		return error
-		
-// 	}
-// }
+export const generaQr = async (docNameHash) => {
+	try{
+		const textoqr = `https://qr-app.fiorebissi.vercel.app/documentos/${docNameHash}`
+
+		var opts = {
+			errorCorrectionLevel: 'H',
+			type: 'png',
+			quality: 0.3
+		}
+		let codigo 
+
+		QRCode.toDataURL(textoqr, opts, function (err, url) {
+			console.log(url)
+			codigo = url
+		})	
+
+		return codigo
+	}catch(error){
+		return error
+	}
+}
+
+
 

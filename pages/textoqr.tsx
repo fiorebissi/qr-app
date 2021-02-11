@@ -13,11 +13,9 @@ const textoqr = () => {
 
 	const generaDescargable = async (data) => {
 		let arrdata = data.split(',')
-		console.log('arrdata',arrdata)
 		var fileBase64 = arrdata[0]
 		var image = fileBase64.split('/')
 		var tipo = image[1]
-		console.log(tipo)
 		let format
 		switch(tipo) {
 			case 'png;base64':
@@ -37,15 +35,14 @@ const textoqr = () => {
 	}
 
 	const onSubmit = async (data) => {
-
-		console.log(data)
 		reset()
 		const response = await qrMaker(data)
-		console.log('me devuelve esto: ',response)
+	
 		setFileQr(true)
 		setUrl(response)
 		
 		const extencion = await generaDescargable(response)
+
 		setExt(extencion)
 	}
 	return (

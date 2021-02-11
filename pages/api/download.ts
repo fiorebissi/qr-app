@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import nextConnect from 'next-connect'
+import { IResponseService } from '@interfaces/IResponseService'
 import contentDisposition from 'content-disposition'
 import response from '@network/response'
 import { download } from '@services/documentationService'

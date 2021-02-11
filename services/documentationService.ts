@@ -4,6 +4,8 @@ import { IResponseService } from '@interfaces/IResponseService'
 import { responseService } from '@utils/functions'
 import mime from 'mime-types'
 import { moveFile } from '@utils/fileUtil'
+import QRCode from 'qrcode'
+
 const pathDocumentation = path.resolve( `./` )
 
 export const uploadDocumentation = async ( body : any ) : Promise<IResponseService> => {
@@ -19,7 +21,7 @@ export const uploadDocumentation = async ( body : any ) : Promise<IResponseServi
 			if (Object.prototype.hasOwnProperty.call(body.files, key)) {
 				const element = body.files[key];
 				const fileType = element.type
-				console.log('fileType', fileType.split( `/` ).pop())
+				// console.log('fileType', fileType.split( `/` ).pop())
 				await moveFile( element.path, `${newDirectory}\\${Buffer.from( element.name ).toString( `base64` )}.${fileType.split( `/` ).pop()}` )
 				documents.push(
 					`${Buffer.from( element.name ).toString( `base64` )}.${fileType.split( `/` ).pop().includes( `zip` ) ? `zip` : fileType.split( `/` ).pop() }`,
@@ -35,20 +37,4 @@ export const uploadDocumentation = async ( body : any ) : Promise<IResponseServi
 	}
 }
 
-export const download = async ( docNameHash: string ): Promise<unknown> => {
-	const directory = `${pathDocumentation}\\documentos`
-	const docName = Buffer.from( docNameHash, `base64` ).toString( `ascii` )
 
-	return new Promise<any>( ( resolve, reject ) => {
-		fs.readFile( `${directory}/${docNameHash}`, ( err, data ) => {
-			if ( err ) {
-				return reject( responseService( { success: false, message: `No se pudo obtener la imagen` } ) )
-			}
-			return resolve( {
-				file: data,
-				name: docName,
-				type: mime.lookup( docName )
-			} )
-		} )
-	} )
-}
