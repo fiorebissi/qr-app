@@ -13,12 +13,14 @@ export default ( ( req: NextApiRequest, res: NextApiResponse, next : any ): void
 		} ).on( `fileBegin`, ( _name, file ) => {
 			const fileType = file.type.split( `/` ).pop()
 
-			if ( fileType !== `png` && fileType !== `jpg` && fileType !== `pdf` && fileType !== `jpeg` && !fileType.includes( `zip` ) ) {
-				response.error( res, `Tipo de archivo invalido, solo se acepta jpg, jpeg, pdf y zip`, 400 )
+			if ( fileType !== `jpg` && fileType !== `pdf` && fileType !== `png` && fileType !== `jpeg` && !fileType.includes( `zip` ) ) {
+				response.error( res, `Tipo de archivo invalido, solo se acepta jpg, jpeg, png, pdf y zip`, 400 )
 			}
 		} )
+
 		form.parse( req, async ( err, fields, files ) => {
 			if ( err ) {
+				console.log(err)
 				console.error( `err.formatRequest :>> `, err.message )
 				response.error( res, `Error multipart`, 400 )
 			}

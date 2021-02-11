@@ -21,6 +21,9 @@ export const uploadDocumentation = async ( body : any ) : Promise<IResponseServi
 				const fileType = element.type
 				console.log('fileType', fileType.split( `/` ).pop())
 				await moveFile( element.path, `${newDirectory}\\${Buffer.from( element.name ).toString( `base64` )}.${fileType.split( `/` ).pop()}` )
+				documents.push(
+					`${Buffer.from( element.name ).toString( `base64` )}.${fileType.split( `/` ).pop().includes( `zip` ) ? `zip` : fileType.split( `/` ).pop() }`,
+				)
 			}
 		}
 		return responseService( { success: true, message: `Documentacion Cargada`, data: documents } )
