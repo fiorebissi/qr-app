@@ -1,16 +1,16 @@
-import path from 'path'
 import fs from 'fs'
 import { IResponseService } from '@interfaces/IResponseService'
 import { responseService } from '@utils/functions'
 import { moveFile } from '@utils/fileUtil'
 
 
-const pathDocumentation = path.resolve( `./` )
+// const pathDocumentation = path.resolve( `./` )
 
 export const uploadDocumentation = async ( body : any ) : Promise<IResponseService> => {
 
 	try{
-		const newDirectory = `${pathDocumentation}\\documentos`
+		const directory = `https://qr-app.fiorebissi.vercel.app/api`
+		const newDirectory = `${directory}\\documentos`
 		const documents = []
 
 		if ( !fs.existsSync( newDirectory ) ) {
