@@ -30,7 +30,7 @@ const fileqr: React.FunctionComponent = () => {
 			formData.append(`${i}`, element)
 			prueba.push({ name: i, file: element })
 		}
-			await fetch(`${path}/api/documentation`, {
+			await fetch(`https://qr-app.fiorebissi.vercel.app/api/documentation`, {
 				method: `POST`,
 				body: formData
 			}).then((result) => {
